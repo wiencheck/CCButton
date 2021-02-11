@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CCButtonExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="4L0-tZ-SuQ">
+                                <rect key="frame" x="41.5" y="430" width="331" height="36"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" id="Civ-T4-R73" customClass="CCButton" customModule="CCButton">
+                                        <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="safeArea" id="K4h-wf-cE7"/>
+                                        <color key="tintColor" systemColor="systemOrangeColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="airplane" catalog="system"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="boN-fj-H4P"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" id="C4Q-7e-624" customClass="CCButton" customModule="CCButton">
+                                        <rect key="frame" x="74" y="0.0" width="36" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="safeArea" id="rFx-w2-WWg"/>
+                                        <color key="tintColor" systemColor="systemGreenColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="wifi" catalog="system"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eQo-8O-4xe"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" id="XKx-9h-7ge" customClass="CCButton" customModule="CCButton">
+                                        <rect key="frame" x="147.5" y="0.0" width="36" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="safeArea" id="M1G-5S-Z2f"/>
+                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="icloud.fill" catalog="system"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xiB-09-4Dy"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" id="hWz-ce-raP" customClass="CCButton" customModule="CCButton">
+                                        <rect key="frame" x="221.5" y="0.0" width="36" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <viewLayoutGuide key="safeArea" id="eIw-By-xTc"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="moon.fill" catalog="system"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LEN-aG-kd0"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-0v-4II" customClass="CCButton" customModule="CCButton">
+                                        <rect key="frame" x="296" y="0.0" width="35" height="36"/>
+                                        <color key="tintColor" systemColor="systemRedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="image" value="lock.rotation.open" catalog="system"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BN7-zW-fMs"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="0.44699515383196781" green="0.52752038716846039" blue="0.79632366741741745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="4L0-tZ-SuQ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.8" id="19h-BM-esA"/>
+                            <constraint firstItem="4L0-tZ-SuQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wWa-pO-KhF"/>
+                            <constraint firstItem="4L0-tZ-SuQ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zNp-XD-XEB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outletCollection property="buttons" destination="Civ-T4-R73" collectionClass="NSMutableArray" id="p07-uJ-3KZ"/>
+                        <outletCollection property="buttons" destination="C4Q-7e-624" collectionClass="NSMutableArray" id="ivY-Rm-w9b"/>
+                        <outletCollection property="buttons" destination="XKx-9h-7ge" collectionClass="NSMutableArray" id="9Jf-h7-per"/>
+                        <outletCollection property="buttons" destination="hWz-ce-raP" collectionClass="NSMutableArray" id="n5X-q2-sJ8"/>
+                        <outletCollection property="buttons" destination="IuK-0v-4II" collectionClass="NSMutableArray" id="Qyp-tg-xG6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="138" y="137"/>
+        </scene>
+    </scenes>
+    <designables>
+        <designable name="C4Q-7e-624">
+            <size key="intrinsicContentSize" width="36" height="36"/>
+        </designable>
+        <designable name="Civ-T4-R73">
+            <size key="intrinsicContentSize" width="36" height="36"/>
+        </designable>
+        <designable name="IuK-0v-4II">
+            <size key="intrinsicContentSize" width="36" height="36"/>
+        </designable>
+        <designable name="XKx-9h-7ge">
+            <size key="intrinsicContentSize" width="36" height="36"/>
+        </designable>
+        <designable name="hWz-ce-raP">
+            <size key="intrinsicContentSize" width="36" height="36"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="airplane" catalog="system" width="128" height="115"/>
+        <image name="icloud.fill" catalog="system" width="128" height="88"/>
+        <image name="lock.rotation.open" catalog="system" width="128" height="110"/>
+        <image name="moon.fill" catalog="system" width="128" height="121"/>
+        <image name="wifi" catalog="system" width="128" height="91"/>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
