@@ -16,35 +16,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="4L0-tZ-SuQ">
-                                <rect key="frame" x="41.5" y="430" width="331" height="36"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="4L0-tZ-SuQ">
+                                <rect key="frame" x="53.5" y="430" width="307" height="36"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="Civ-T4-R73" customClass="CCButton" customModule="CCButton">
-                                        <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <viewLayoutGuide key="safeArea" id="K4h-wf-cE7"/>
                                         <color key="tintColor" systemColor="systemOrangeColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="airplane" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="boN-fj-H4P"/>
-                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" id="C4Q-7e-624" customClass="CCButton" customModule="CCButton">
-                                        <rect key="frame" x="74" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="64" y="0.0" width="40.5" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <viewLayoutGuide key="safeArea" id="rFx-w2-WWg"/>
                                         <color key="tintColor" systemColor="systemGreenColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="wifi" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eQo-8O-4xe"/>
-                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" id="XKx-9h-7ge" customClass="CCButton" customModule="CCButton">
-                                        <rect key="frame" x="147.5" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="128.5" y="0.0" width="40" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <viewLayoutGuide key="safeArea" id="M1G-5S-Z2f"/>
                                         <color key="tintColor" systemColor="systemTealColor"/>
@@ -52,29 +46,23 @@
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="icloud.fill" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xiB-09-4Dy"/>
+                                            <action selector="cloudPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gc3-C2-rd0"/>
                                         </connections>
                                     </view>
                                     <view contentMode="scaleToFill" id="hWz-ce-raP" customClass="CCButton" customModule="CCButton">
-                                        <rect key="frame" x="221.5" y="0.0" width="36" height="36"/>
+                                        <rect key="frame" x="192.5" y="0.0" width="40.5" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <viewLayoutGuide key="safeArea" id="eIw-By-xTc"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="moon.fill" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LEN-aG-kd0"/>
-                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-0v-4II" customClass="CCButton" customModule="CCButton">
-                                        <rect key="frame" x="296" y="0.0" width="35" height="36"/>
+                                        <rect key="frame" x="257" y="0.0" width="50" height="36"/>
                                         <color key="tintColor" systemColor="systemRedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="image" value="lock.rotation.open" catalog="system"/>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BN7-zW-fMs"/>
-                                        </connections>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -82,7 +70,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.44699515383196781" green="0.52752038716846039" blue="0.79632366741741745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="4L0-tZ-SuQ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.8" id="19h-BM-esA"/>
                             <constraint firstItem="4L0-tZ-SuQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wWa-pO-KhF"/>
                             <constraint firstItem="4L0-tZ-SuQ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zNp-XD-XEB"/>
                         </constraints>

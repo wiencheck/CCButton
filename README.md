@@ -12,5 +12,11 @@ https://github.com/wiencheck/BoldButton
 ```
 
 ## Usage
+Use the `image` property to set custom image.
+
 Use the `tintColor` property to change color of the button while in selected state. Changing tint doesn't have any effect unless the button is selected.
+
 Use the `pressHandler` property to add your action to the `.touchUpInside` event without using the target-action pattern. As CCButton subclasses `UIControl` you can always use the `.addTarget...` or the new `.addAction...` method starting with iOS 14.
+
+### Loading indicator
+`CCButton` can present a loading state. To activate it just set the `isLoading` property to `true`.

@@ -11,12 +11,29 @@ import UIKit
 public class CCButton: UIControl {
     // - MARK: Public properties
     
-    @IBInspectable
-    public var image: UIImage? {
+    /**
+     Image displayed inside of the button.
+     */
+    @IBInspectable public var image: UIImage? {
         didSet {
             imageView.image = image
             #if TARGET_INTERFACE_BUILDER
                 setNeedsLayout()
+            #endif
+        }
+    }
+    
+    /**
+     Toggle this value to display loading indicator inside of the button.
+     */
+    @IBInspectable public var isLoading: Bool = false {
+        didSet {
+            isLoading ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
+            #if TARGET_INTERFACE_BUILDER
+                updateLoadingState(animated: false)
+                setNeedsLayout()
+            #else
+                updateLoadingState(animated: true)
             #endif
         }
     }
@@ -42,6 +59,13 @@ public class CCButton: UIControl {
         let v = UIView(frame: .zero)
         v.alpha = 0
         return v
+    }()
+    
+    private lazy var loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView.safeIndicatorView
+        indicator.hidesWhenStopped = false
+        indicator.alpha = 0
+        return indicator
     }()
         
     private lazy var blurBackground = UIVisualEffectView(effect: UIBlurEffect.safeBackgroundBlurEffect)
@@ -69,8 +93,20 @@ public class CCButton: UIControl {
         }
     }
     
+    public override var isEnabled: Bool {
+        didSet {
+            #if TARGET_INTERFACE_BUILDER
+                updateEnabledState(animated: false)
+                setNeedsLayout()
+            #else
+                updateEnabledState(animated: true)
+            #endif
+        }
+    }
+    
     public override var tintColor: UIColor! {
         didSet {
+            usesCustomTintColor = (tintColor != nil)
             colorBackground.backgroundColor = tintColor
         }
     }
@@ -150,6 +186,29 @@ public class CCButton: UIControl {
         }
     }
     
+    private func updateLoadingState(animated: Bool) {
+        func animations() {
+            imageView.alpha = isLoading ? 0 : 1
+            loadingIndicator.alpha = isLoading ? 1 : 0
+        }
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: animations)
+        } else {
+            animations()
+        }
+    }
+    
+    private func updateEnabledState(animated: Bool) {
+        func animations() {
+            alpha = isEnabled ? 1 : 0.6
+        }
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: animations)
+        } else {
+            animations()
+        }
+    }
+    
     @objc private func handleTouchUp() {
         pressHandler?(self)
     }
@@ -166,52 +225,18 @@ private extension CCButton {
         let imageViewSizeRatio: CGFloat = 0.6
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(loadingIndicator)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Activate constraints
         NSLayoutConstraint.activate([
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: imageViewSizeRatio),
-            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: imageViewSizeRatio)
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: imageViewSizeRatio),
+            loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
-    }
-}
-
-fileprivate extension UIView {
-    func pinToSuperviewEdges(margin: CGFloat = 0) {
-        guard let superview = superview else {
-            return
-        }
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            topAnchor.constraint(equalTo: superview.topAnchor, constant: margin),
-            leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: margin),
-            bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: -margin),
-            trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -margin)
-        ])
-    }
-}
-
-fileprivate extension UIColor {
-    class var safeLabelColor: UIColor {
-        if #available(iOS 13.0, *) {
-            return .label
-        }
-        return .black
-    }
-    
-    class var safeBackgroundColor: UIColor {
-        let alpha: CGFloat = 0.88
-        if #available(iOS 13.0, *) {
-            return UIColor.systemBackground.withAlphaComponent(alpha)
-        }
-        return UIColor.white.withAlphaComponent(alpha)
-    }
-}
-
-fileprivate extension UIBlurEffect {
-    class var safeBackgroundBlurEffect: UIBlurEffect {
-        if #available(iOS 13.0, *) {
-            return UIBlurEffect(style: .systemUltraThinMaterial)
-        }
-        return UIBlurEffect(style: .regular)
     }
 }

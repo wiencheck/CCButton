@@ -39,8 +39,8 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func buttonPressed(_ sender: UIControl) {
-        sender.isSelected.toggle()
+    @IBAction func cloudPressed(_ sender: CCButton) {
+        sender.isLoading.toggle()
     }
 }
 
