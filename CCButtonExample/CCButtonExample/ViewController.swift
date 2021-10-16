@@ -29,7 +29,10 @@ class ViewController: UIViewController {
     
     private func toggleButtons(animated: Bool) {
         guard animated else {
-            buttons.forEach({$0.isSelected.toggle()})
+            buttons.forEach({
+                $0.isSelected.toggle()
+                $0.selectionStyle = .highlightImage
+            })
             return
         }
         for (idx, button) in buttons.enumerated() {

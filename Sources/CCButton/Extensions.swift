@@ -31,7 +31,7 @@ extension UIColor {
     }
     
     class var safeBackgroundColor: UIColor {
-        let alpha: CGFloat = 0.88
+        let alpha: CGFloat = 0.8
         if #available(iOS 13.0, *) {
             return UIColor.systemBackground.withAlphaComponent(alpha)
         }

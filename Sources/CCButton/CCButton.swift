@@ -43,8 +43,47 @@ public class CCButton: UIControl {
      */
     public var pressHandler: ((CCButton) -> Void)?
     
+    /**
+     Custom tint color of the image.
+     */
+    @IBInspectable public var imageTintColor: UIColor? {
+        didSet {
+            #if TARGET_INTERFACE_BUILDER
+                updateSelectedState(animated: false)
+                setNeedsLayout()
+            #else
+                updateSelectedState(animated: true)
+            #endif
+        }
+    }
+    
+    /**
+     Defines styling of the button when in selected state.
+     
+     Default value is `.highlightBackground`
+     */
+    @IBInspectable public var selectionStyle: SelectionStyle = .highlightBackground {
+        didSet {
+            updateSelectedState(animated: false)
+            #if TARGET_INTERFACE_BUILDER
+                setNeedsLayout()
+            #endif
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    public var menu: UIMenu? {
+        get {
+            return magicButton.menu
+        } set {
+            magicButton.menu = newValue
+            magicButton.showsMenuAsPrimaryAction = (newValue != nil)
+            magicButton.isUserInteractionEnabled = (newValue != nil)
+        }
+    }
+    
     // - MARK: Private properties
-    private var usesCustomTintColor = false
+    private var customTintColor: UIColor?
     
     // - MARK: Private UI elements
     
@@ -69,6 +108,12 @@ public class CCButton: UIControl {
     }()
         
     private lazy var blurBackground = UIVisualEffectView(effect: UIBlurEffect.safeBackgroundBlurEffect)
+    
+    private lazy var magicButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.setTitle(nil, for: .normal)
+        return b
+    }()
     
     // - MARK: Overrides
     public override var isSelected: Bool {
@@ -106,8 +151,11 @@ public class CCButton: UIControl {
     
     public override var tintColor: UIColor! {
         didSet {
-            usesCustomTintColor = (tintColor != nil)
-            colorBackground.backgroundColor = tintColor
+            if tintColor == superview?.tintColor {
+                return
+            }
+            customTintColor = tintColor
+            updateSelectedState(animated: false)
         }
     }
     
@@ -120,7 +168,7 @@ public class CCButton: UIControl {
     
     public override func tintColorDidChange() {
         super.tintColorDidChange()
-        colorBackground.backgroundColor = tintColor
+        colorBackground.backgroundColor = adjustedBackgroundColor
     }
     
     public override var intrinsicContentSize: CGSize {
@@ -140,8 +188,35 @@ public class CCButton: UIControl {
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
-        usesCustomTintColor = (UIView().tintColor != tintColor)
         commonInit()
+    }
+    
+    // - MARK: Private computed variables
+    private var adjustedBackgroundColor: UIColor {
+        switch selectionStyle {
+        case .highlightBackground:
+            guard isSelected else {
+                return .clear
+            }
+            if let customTintColor = customTintColor {
+                return customTintColor
+            }
+            return .safeBackgroundColor
+        case .highlightImage:
+            return isSelected ? .safeBackgroundColor : .clear
+        }
+    }
+    
+    private var adjustedImageColor: UIColor {
+        if let imageTint = imageTintColor {
+            return imageTint
+        }
+        switch selectionStyle {
+        case .highlightBackground:
+            return isSelected ? .white : .safeLabelColor
+        case .highlightImage:
+            return isSelected ? (customTintColor ?? tintColor) : .safeLabelColor
+        }
     }
     
     // - MARK: Private methods
@@ -158,13 +233,8 @@ public class CCButton: UIControl {
     
     private func updateSelectedState(animated: Bool) {
         func animations() {
-            if usesCustomTintColor {
-                colorBackground.backgroundColor = tintColor
-                imageView.tintColor = isSelected ? .white : .safeLabelColor
-            } else {
-                colorBackground.backgroundColor = .safeBackgroundColor
-                imageView.tintColor = .safeLabelColor
-            }
+            colorBackground.backgroundColor = adjustedBackgroundColor
+            imageView.tintColor = adjustedImageColor
             blurBackground.alpha = isSelected ? 0 : 1
             colorBackground.alpha = isSelected ? 1 : 0
         }
@@ -228,9 +298,15 @@ private extension CCButton {
         
         addSubview(loadingIndicator)
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(magicButton)
+        magicButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Activate constraints
         NSLayoutConstraint.activate([
+            magicButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+            magicButton.bottomAnchor.constraint(equalTo: bottomAnchor),
+            magicButton.topAnchor.constraint(equalTo: topAnchor),
+            magicButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: imageViewSizeRatio),
@@ -238,5 +314,19 @@ private extension CCButton {
             loadingIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
             loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
+    }
+}
+
+public extension CCButton {
+    @objc enum SelectionStyle: UInt {
+        /**
+         Applies styling so that background of the button is filled with color.
+         */
+        case highlightBackground
+        
+        /**
+         Applies styling so that image of the button is tinted with color.
+         */
+        case highlightImage
     }
 }
