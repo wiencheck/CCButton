@@ -42,7 +42,7 @@ extension UIColor {
 extension UIBlurEffect {
     class var safeBackgroundBlurEffect: UIBlurEffect {
         if #available(iOS 13.0, *) {
-            return UIBlurEffect(style: .systemUltraThinMaterial)
+            return UIBlurEffect(style: .prominent)
         }
         return UIBlurEffect(style: .regular)
     }

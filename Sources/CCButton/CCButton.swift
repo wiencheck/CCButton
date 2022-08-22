@@ -9,7 +9,8 @@ import UIKit
 
 @IBDesignable
 public class CCButton: UIControl {
-    // - MARK: Public properties
+    
+    // MARK: Public properties
     
     /**
      Image displayed inside of the button.
@@ -41,6 +42,7 @@ public class CCButton: UIControl {
     /**
      Action performed on `.touchUpInside` event.
      */
+    @available(*, deprecated, message: "Use UIAction for .primaryActionTriggered event")
     public var pressHandler: ((CCButton) -> Void)?
     
     /**
@@ -73,19 +75,21 @@ public class CCButton: UIControl {
     
     @available(iOS 14.0, *)
     public var menu: UIMenu? {
-        get {
-            return magicButton.menu
-        } set {
-            magicButton.menu = newValue
-            magicButton.showsMenuAsPrimaryAction = (newValue != nil)
-            magicButton.isUserInteractionEnabled = (newValue != nil)
-        }
+        get { magicButton.menu }
+        set { magicButton.menu = newValue }
     }
     
-    // - MARK: Private properties
-    private var customTintColor: UIColor?
+    @available(iOS 14.0, *)
+    public override var showsMenuAsPrimaryAction: Bool {
+        get { magicButton.showsMenuAsPrimaryAction }
+        set { magicButton.showsMenuAsPrimaryAction = newValue }
+    }
     
-    // - MARK: Private UI elements
+    // MARK: Private properties
+    private var customTintColor: UIColor?
+    private var size: CGFloat = 0
+    
+    // MARK: Private UI elements
     
     private(set) lazy var imageView: UIImageView = {
         let i = UIImageView(frame: .zero)
@@ -112,10 +116,18 @@ public class CCButton: UIControl {
     private lazy var magicButton: UIButton = {
         let b = UIButton(type: .system)
         b.setTitle(nil, for: .normal)
+        
         return b
     }()
     
-    // - MARK: Overrides
+    // MARK: Initialization
+    public convenience init(size: CGFloat) {
+        self.init(frame: .zero)
+        self.size = size
+    }
+    
+    // MARK: Overriden properties
+    
     public override var isSelected: Bool {
         didSet {
             #if TARGET_INTERFACE_BUILDER
@@ -172,15 +184,14 @@ public class CCButton: UIControl {
     }
     
     public override var intrinsicContentSize: CGSize {
-        let size: CGFloat = 36
+        var size: CGFloat = 36
+        if self.size > 0 {
+            size = self.size
+        }
         return CGSize(width: size, height: size)
     }
     
-    public override func prepareForInterfaceBuilder() {
-        invalidateIntrinsicContentSize()
-    }
-    
-    // - MARK: Initialization
+    // MARK: Initialization
     public override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -191,8 +202,44 @@ public class CCButton: UIControl {
         commonInit()
     }
     
-    // - MARK: Private computed variables
-    private var adjustedBackgroundColor: UIColor {
+    // MARK: Overriden methods
+    
+    public override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        invalidateIntrinsicContentSize()
+    }
+    
+    @available(iOS 14.0, *)
+    public override func addAction(_ action: UIAction, for controlEvents: UIControl.Event) {
+        super.addAction(action, for: controlEvents)
+        
+        guard controlEvents.contains(.primaryActionTriggered) else {
+            return
+        }
+        if image == nil {
+            image = action.image
+        }
+        isEnabled = !action.attributes.contains(.disabled)
+    }
+    
+    public override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let margin: CGFloat = 8
+        
+        let newArea = CGRect(
+            x: self.bounds.origin.x - margin,
+            y: self.bounds.origin.y - margin,
+            width: self.bounds.size.width + (2 * margin),
+            height: self.bounds.size.height + (2 * margin)
+        )
+        return newArea.contains(point)
+    }
+    
+}
+
+// MARK: Private
+private extension CCButton {
+    
+    var adjustedBackgroundColor: UIColor {
         switch selectionStyle {
         case .highlightBackground:
             guard isSelected else {
@@ -207,7 +254,7 @@ public class CCButton: UIControl {
         }
     }
     
-    private var adjustedImageColor: UIColor {
+    var adjustedImageColor: UIColor {
         if let imageTint = imageTintColor {
             return imageTint
         }
@@ -219,19 +266,24 @@ public class CCButton: UIControl {
         }
     }
     
-    // - MARK: Private methods
-    
-    private func commonInit() {
+    func commonInit() {
         clipsToBounds = true
         backgroundColor = .clear
         setupView()
-        for subview in subviews {
-            subview.isUserInteractionEnabled = false
-        }
-        addTarget(self, action: #selector(handleTouchUp), for: .touchUpInside)
+        magicButton.addTarget(self,
+                              action: #selector(handleTouchUp),
+                              for: .touchUpInside)
     }
     
-    private func updateSelectedState(animated: Bool) {
+    @objc func handleTouchUp() {
+        if #available(iOS 14.0, *), !showsMenuAsPrimaryAction {
+            sendActions(for: .primaryActionTriggered)
+        }
+        sendActions(for: .touchUpInside)
+        pressHandler?(self)
+    }
+    
+    func updateSelectedState(animated: Bool) {
         func animations() {
             colorBackground.backgroundColor = adjustedBackgroundColor
             imageView.tintColor = adjustedImageColor
@@ -245,7 +297,7 @@ public class CCButton: UIControl {
         }
     }
     
-    private func updateHighlightedState(animated: Bool) {
+    func updateHighlightedState(animated: Bool) {
         func animations() {
             alpha = isHighlighted ? 0.7 : 1
         }
@@ -256,7 +308,7 @@ public class CCButton: UIControl {
         }
     }
     
-    private func updateLoadingState(animated: Bool) {
+    func updateLoadingState(animated: Bool) {
         func animations() {
             imageView.alpha = isLoading ? 0 : 1
             loadingIndicator.alpha = isLoading ? 1 : 0
@@ -268,7 +320,7 @@ public class CCButton: UIControl {
         }
     }
     
-    private func updateEnabledState(animated: Bool) {
+    func updateEnabledState(animated: Bool) {
         func animations() {
             alpha = isEnabled ? 1 : 0.6
         }
@@ -279,12 +331,6 @@ public class CCButton: UIControl {
         }
     }
     
-    @objc private func handleTouchUp() {
-        pressHandler?(self)
-    }
-}
-
-private extension CCButton {
     func setupView() {
         addSubview(blurBackground)
         blurBackground.pinToSuperviewEdges()
@@ -315,6 +361,7 @@ private extension CCButton {
             loadingIndicator.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
+    
 }
 
 public extension CCButton {
